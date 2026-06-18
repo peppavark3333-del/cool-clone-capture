@@ -37,7 +37,7 @@ const stats = [
   { k: "Certified", v: "Qualified" },
 ];
 
-const electricals = [
+const electricals: [string, string][] = [
   ["/img/electrical-1-BfkQdgeN.jpg", "Control panel — heater & sensor circuits"],
   ["/img/electrical-3-CUCJLTdL.jpg", "Contactor & overload bank — chiller plant"],
   ["/img/electrical-4-BhYcr3sm.jpg", "Three-phase distribution & control wiring"],
@@ -51,14 +51,14 @@ const electricals = [
   ["/img/electrical-11-jD6g_6dO.jpg", "Reletek timer relay & Hager fuse — relay logic build"],
 ];
 
-const aircurtains = [
+const aircurtains: [string, string][] = [
   ["/img/aircurtain-1-CUz0BG8j.jpg", "Thermocold air curtain — retail entrance"],
   ["/img/aircurtain-2-DHyfw3Rb.jpg", "Alliance air curtain — shopfront installation"],
   ["/img/aircurtain-3-DHcUgTH1.jpg", "Alliance air curtain — interior doorway"],
   ["/img/aircurtain-4-D9TNpgsc.jpg", "Heavy-duty perforated air curtain"],
 ];
 
-const cassettes = [
+const cassettes: [string, string][] = [
   ["/img/cassette-1-C4uKBuYk.jpg", "Daikin ceiling cassette — stripped for deep service"],
   ["/img/cassette-2-2CT3IQit.jpg", "Turbo fan impeller removed for cleaning"],
   ["/img/cassette-3-CPIGRnDc.jpg", "Fan housing — pre-clean inspection"],
@@ -70,7 +70,7 @@ const cassettes = [
   ["/img/cassette-9-Buk-uOM6.jpg", "Daikin SkyAir outdoor units — commissioned & running"],
 ];
 
-const compressors = [
+const compressors: [string, string][] = [
   ["/img/compressor-7-CiVsDlMt.jpg", "Bitzer semi-hermetic compressor — overhauled & repainted"],
   ["/img/compressor-8-DB7qLnnz.jpg", "Refurbished compressor installed on anti-vibration mounts"],
   ["/img/compressor-5-CIB8Eap5.jpg", "Plant room — compressor & condenser pipework"],
@@ -81,7 +81,7 @@ const compressors = [
   ["/img/compressor-4-BEZFkX11.jpg", "Compressor control panel — contactors, relays & Carel ir33"],
 ];
 
-const ducts = [
+const ducts: [string, string][] = [
   ["/img/duct-1-XyoUKQL3.jpg", "Galvanised spiral ducting & flexi connections — manifold takeoff"],
   ["/img/duct-2-Bv-8Cgcp.jpg", "Elta Fans inline extractor — branch ducting installation"],
   ["/img/duct-3-DQTuh2ie.jpg", "S&P TD-1000 Silent inline mixed-flow fan — ceiling void"],
@@ -106,7 +106,7 @@ const ducts = [
   ["/img/duct-22-DYmerk42.jpg", "Cape Fans roof-mounted centrifugal extractor with cowl"],
 ];
 
-const fab = [
+const fab: [string, string][] = [
   ["/img/fab-3-B3pS0-um.jpg", "Custom galvanised bird & hail guard — welded mesh on sheet collar"],
   ["/img/fab-2-C0MXdYRO.jpg", "Heavy-duty extraction cowl with woven mesh face — workshop build"],
   ["/img/fab-1-BPck_qNt.jpg", "Bird-proof intake grille — galvanised frame with welded mesh"],
@@ -116,7 +116,7 @@ const fab = [
   ["/img/fab-6-Cp8ybs5C.jpg", "Site-fitted condenser protection cages — outdoor courtyard installation"],
 ];
 
-const glycol = [
+const glycol: [string, string][] = [
   ["/img/glycol-5-C96i489o.jpg", "Multi-fan rooftop glycol chiller bank — full installation"],
   ["/img/glycol-6-DYJAPor7.jpg", "EC fan array on packaged chiller — site commissioning"],
   ["/img/glycol-1-Djcke9Xv.jpg", "V-coil condenser & brazed-plate evaporator — chiller end-bay"],
