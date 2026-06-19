@@ -1,9 +1,12 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useRef, useState } from "react";
 import {
   Phone, MessageCircle, Mail, MapPin, Clock, ShieldCheck, Wrench,
   Snowflake, Wind, Flame, Droplets, Zap, Factory, ArrowRight, CheckCircle2,
 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import logo from "@/assets/rybus-logo.jpeg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -140,6 +143,24 @@ const glycol: [string, string][] = [
 ];
 
 function Header() {
+  const navigate = useNavigate();
+  const clicks = useRef<number[]>([]);
+
+  const handleLogoClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const now = Date.now();
+    clicks.current = [...clicks.current.filter((t) => now - t < 1500), now];
+    if (clicks.current.length >= 5) {
+      clicks.current = [];
+      navigate({ to: "/admin-login" });
+      return;
+    }
+    if (typeof window !== "undefined") {
+      const el = document.getElementById("top");
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <>
       <div className="bg-hero-gradient text-white text-sm">
@@ -154,9 +175,12 @@ function Header() {
       </div>
       <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur">
         <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
-          <a href="#top" className="flex items-center gap-2">
-            <div className="h-10 w-10 rounded-xl bg-hero-gradient grid place-items-center text-white font-display font-bold">R</div>
-            <div className="font-display font-bold text-lg tracking-tight">Rybus</div>
+          <a href="#top" onClick={handleLogoClick} className="flex items-center gap-3 select-none" title="Rybus">
+            <img src={logo} alt="Rybus — HVAC & Solar Hot Water" className="h-12 w-12 rounded-xl object-contain bg-white border border-border" />
+            <div>
+              <div className="font-display font-bold text-lg tracking-tight leading-none">Rybus</div>
+              <div className="text-[10px] uppercase tracking-wider text-muted-foreground mt-0.5">HVAC & Solar Hot Water</div>
+            </div>
           </a>
           <nav className="hidden md:flex items-center gap-7 text-sm font-medium">
             <a href="#top" className="hover:text-primary">Home</a>
@@ -399,6 +423,32 @@ function CoolingTowers() {
 
 function ContactForm() {
   const [sent, setSent] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [form, setForm] = useState({
+    name: "", phone: "", email: "", address: "",
+    service_type: "", property_size: "", message: "",
+  });
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name || !form.phone || !form.email) return toast.error("Name, phone and email are required");
+    setBusy(true);
+    const { error } = await supabase.from("quotes").insert({
+      name: form.name.trim().slice(0, 100),
+      phone: form.phone.trim().slice(0, 30),
+      email: form.email.trim().slice(0, 255),
+      address: form.address.trim().slice(0, 500) || null,
+      service_type: form.service_type || null,
+      property_size: form.property_size.trim().slice(0, 100) || null,
+      message: form.message.trim().slice(0, 2000) || null,
+    });
+    setBusy(false);
+    if (error) return toast.error("Could not send. Please call us instead.");
+    setSent(true);
+    toast.success("Thanks! We'll be in touch shortly.");
+    setForm({ name: "", phone: "", email: "", address: "", service_type: "", property_size: "", message: "" });
+  };
+
   return (
     <section id="contact" className="bg-hero-gradient text-white">
       <div className="mx-auto grid max-w-7xl gap-12 px-6 py-24 md:grid-cols-2">
@@ -434,23 +484,27 @@ function ContactForm() {
             </div>
           </div>
         </div>
-        <form
-          onSubmit={(e) => { e.preventDefault(); setSent(true); }}
-          className="rounded-3xl bg-white/10 p-8 backdrop-blur border border-white/15"
-        >
+        <form onSubmit={submit} className="rounded-3xl bg-white/10 p-8 backdrop-blur border border-white/15">
           <div className="space-y-4">
-            <Field label="Full name"><input required className="w-full rounded-lg bg-white/10 border border-white/20 px-4 py-3 outline-none focus:border-accent placeholder-white/50" placeholder="Your name" /></Field>
-            <Field label="Phone or email"><input required className="w-full rounded-lg bg-white/10 border border-white/20 px-4 py-3 outline-none focus:border-accent placeholder-white/50" placeholder="How can we reach you" /></Field>
-            <Field label="Service required">
-              <select className="w-full rounded-lg bg-white/10 border border-white/20 px-4 py-3 outline-none focus:border-accent text-white">
-                {["Select a service…","Air-conditioning","Refrigeration","Ducting & Ventilation","Heat Pumps","Glycol & Water Chillers","Electricals & Controllers","Ice Machines & Compressors","Air Curtains & Cooling Towers","Other"].map((o) => (
-                  <option key={o} className="text-foreground">{o}</option>
-                ))}
-              </select>
-            </Field>
-            <Field label="Message"><textarea rows={4} className="w-full rounded-lg bg-white/10 border border-white/20 px-4 py-3 outline-none focus:border-accent placeholder-white/50" placeholder="Tell us about the job" /></Field>
-            <button type="submit" className="w-full rounded-full bg-accent-gradient px-6 py-3 font-semibold text-accent-foreground shadow-glow hover:scale-[1.02] transition-transform">
-              {sent ? "Thanks — we'll be in touch" : "Send request"}
+            <Field label="Full name *"><input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} maxLength={100} className="w-full rounded-lg bg-white/10 border border-white/20 px-4 py-3 outline-none focus:border-accent placeholder-white/50" placeholder="Your name" /></Field>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <Field label="Phone *"><input required value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} maxLength={30} className="w-full rounded-lg bg-white/10 border border-white/20 px-4 py-3 outline-none focus:border-accent placeholder-white/50" placeholder="082…" /></Field>
+              <Field label="Email *"><input required type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} maxLength={255} className="w-full rounded-lg bg-white/10 border border-white/20 px-4 py-3 outline-none focus:border-accent placeholder-white/50" placeholder="you@example.com" /></Field>
+            </div>
+            <Field label="Address"><input value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} maxLength={500} className="w-full rounded-lg bg-white/10 border border-white/20 px-4 py-3 outline-none focus:border-accent placeholder-white/50" placeholder="Where is the job?" /></Field>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <Field label="Service required">
+                <select value={form.service_type} onChange={(e) => setForm({ ...form, service_type: e.target.value })} className="w-full rounded-lg bg-white/10 border border-white/20 px-4 py-3 outline-none focus:border-accent text-white">
+                  {["","Air-conditioning","Refrigeration","Ducting & Ventilation","Heat Pumps","Glycol & Water Chillers","Electricals & Controllers","Ice Machines & Compressors","Air Curtains & Cooling Towers","Solar Hot Water","Other"].map((o) => (
+                    <option key={o} value={o} className="text-foreground">{o || "Select a service…"}</option>
+                  ))}
+                </select>
+              </Field>
+              <Field label="Property size"><input value={form.property_size} onChange={(e) => setForm({ ...form, property_size: e.target.value })} maxLength={100} className="w-full rounded-lg bg-white/10 border border-white/20 px-4 py-3 outline-none focus:border-accent placeholder-white/50" placeholder="e.g. 80m² or 3 rooms" /></Field>
+            </div>
+            <Field label="Message"><textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} maxLength={2000} rows={4} className="w-full rounded-lg bg-white/10 border border-white/20 px-4 py-3 outline-none focus:border-accent placeholder-white/50" placeholder="Tell us about the job" /></Field>
+            <button disabled={busy} type="submit" className="w-full rounded-full bg-accent-gradient px-6 py-3 font-semibold text-accent-foreground shadow-glow hover:scale-[1.02] transition-transform disabled:opacity-60">
+              {busy ? "Sending…" : sent ? "Thanks — we'll be in touch" : "Send request"}
             </button>
           </div>
         </form>
@@ -473,8 +527,8 @@ function Footer() {
     <footer className="border-t border-border bg-background">
       <div className="mx-auto max-w-7xl px-6 py-12 grid gap-8 md:grid-cols-3 text-sm">
         <div>
-          <div className="flex items-center gap-2">
-            <div className="h-9 w-9 rounded-lg bg-hero-gradient grid place-items-center text-white font-display font-bold">R</div>
+          <div className="flex items-center gap-3">
+            <img src={logo} alt="Rybus" className="h-10 w-10 rounded-lg object-contain bg-white border border-border" />
             <div className="font-display font-bold text-lg">Rybus (Pty) Ltd</div>
           </div>
           <p className="mt-3 text-muted-foreground">Cool air. Done right. Cape Town's qualified air-conditioning & refrigeration specialists.</p>
