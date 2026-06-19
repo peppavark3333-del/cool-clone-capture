@@ -35,7 +35,7 @@ function Content() {
   });
 
   const save = async (key: string, value: Record<string, unknown>) => {
-    const { error } = await supabase.from("site_content").upsert({ key, value });
+    const { error } = await supabase.from("site_content").upsert({ key, value: value as never });
     if (error) return toast.error(error.message);
     await logAudit("content_update", "site_content", key);
     toast.success(`${key} saved`);

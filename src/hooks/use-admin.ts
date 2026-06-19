@@ -51,6 +51,6 @@ export async function logAudit(action: string, entity?: string, entity_id?: stri
     action,
     entity: entity ?? null,
     entity_id: entity_id ?? null,
-    metadata: metadata ?? null,
+    metadata: (metadata ?? null) as never,
   });
 }
