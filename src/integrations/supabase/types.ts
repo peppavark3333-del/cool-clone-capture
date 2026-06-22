@@ -14,24 +14,6 @@ export type Database = {
   }
   public: {
     Tables: {
-      active_sessions: {
-        Row: {
-          last_seen: string
-          path: string | null
-          session_id: string
-        }
-        Insert: {
-          last_seen?: string
-          path?: string | null
-          session_id: string
-        }
-        Update: {
-          last_seen?: string
-          path?: string | null
-          session_id?: string
-        }
-        Relationships: []
-      }
       audit_logs: {
         Row: {
           action: string
@@ -297,16 +279,19 @@ export type Database = {
       }
       site_content: {
         Row: {
+          is_public: boolean
           key: string
           updated_at: string
           value: Json
         }
         Insert: {
+          is_public?: boolean
           key: string
           updated_at?: string
           value?: Json
         }
         Update: {
+          is_public?: boolean
           key?: string
           updated_at?: string
           value?: Json
