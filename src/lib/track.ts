@@ -16,18 +16,12 @@ export async function trackPageView(path: string) {
   if (typeof window === "undefined") return;
   const session_id = getSessionId();
   try {
-    await Promise.all([
-      supabase.from("page_views").insert({
-        session_id,
-        path,
-        referrer: document.referrer || null,
-        user_agent: navigator.userAgent,
-      }),
-      supabase.from("active_sessions").upsert(
-        { session_id, path, last_seen: new Date().toISOString() },
-        { onConflict: "session_id" },
-      ),
-    ]);
+    await supabase.from("page_views").insert({
+      session_id,
+      path,
+      referrer: document.referrer || null,
+      user_agent: navigator.userAgent,
+    });
   } catch {
     /* ignore */
   }
