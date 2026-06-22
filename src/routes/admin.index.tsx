@@ -37,7 +37,7 @@ function Dashboard() {
       const [visitorsTotal, visitors24h, activeNow, quotesTotal, quotesPending, quotesAccepted, quotesCompleted, recent] = await Promise.all([
         supabase.from("page_views").select("session_id", { count: "exact", head: true }),
         supabase.from("page_views").select("id", { count: "exact", head: true }).gte("created_at", since24h),
-        supabase.from("active_sessions").select("session_id", { count: "exact", head: true }).gte("last_seen", since5m),
+        supabase.from("page_views").select("session_id", { count: "exact", head: true }).gte("created_at", since5m),
         supabase.from("quotes").select("id", { count: "exact", head: true }),
         supabase.from("quotes").select("id", { count: "exact", head: true }).eq("status", "pending"),
         supabase.from("quotes").select("id", { count: "exact", head: true }).eq("status", "accepted"),
