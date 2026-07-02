@@ -14,6 +14,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "@/components/ui/sonner";
 import { trackPageView } from "@/lib/track";
+import { Thermostat } from "@/components/thermostat";
 
 function NotFoundComponent() {
   return (
