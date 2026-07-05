@@ -12,7 +12,6 @@ export const Route = createFileRoute("/admin-login")({
 
 function AdminLogin() {
   const navigate = useNavigate();
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
@@ -27,14 +26,6 @@ function AdminLogin() {
     e.preventDefault();
     setBusy(true);
     try {
-      if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({
-          email, password,
-          options: { emailRedirectTo: `${window.location.origin}/admin` },
-        });
-        if (error) throw error;
-        toast.success("Account created. Signing you in…");
-      }
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
       toast.success("Welcome back");
@@ -57,7 +48,7 @@ function AdminLogin() {
             <div className="text-xs text-muted-foreground flex items-center gap-1"><ShieldCheck className="h-3 w-3" /> Restricted area</div>
           </div>
         </div>
-        <h1 className="mt-6 font-display text-2xl font-bold">{mode === "signin" ? "Sign in" : "Create admin account"}</h1>
+        <h1 className="mt-6 font-display text-2xl font-bold">Sign in</h1>
         <form onSubmit={submit} className="mt-6 space-y-4">
           <label className="block">
             <span className="text-xs uppercase tracking-wider text-muted-foreground">Email</span>
@@ -74,15 +65,9 @@ function AdminLogin() {
             </div>
           </label>
           <button disabled={busy} type="submit" className="w-full rounded-full bg-hero-gradient px-6 py-3 font-semibold text-white shadow-glow disabled:opacity-50">
-            {busy ? "Please wait…" : mode === "signin" ? "Sign in" : "Create account & sign in"}
+            {busy ? "Please wait…" : "Sign in"}
           </button>
         </form>
-        <button onClick={() => setMode(mode === "signin" ? "signup" : "signin")} className="mt-4 text-sm text-muted-foreground hover:text-primary block mx-auto">
-          {mode === "signin" ? "Need to create the admin account?" : "Already have an account? Sign in"}
-        </button>
-        <p className="mt-6 text-xs text-muted-foreground text-center">
-          The first sign-up as <code className="text-primary">rybusadmin@rybus.com</code> becomes admin automatically.
-        </p>
       </div>
     </div>
   );
