@@ -476,7 +476,7 @@ function ContactForm() {
             </div>
             <div>
               <h4 className="font-display text-base font-semibold">Email</h4>
-              <p className="mt-2 text-white/80">info@rybus.co.za<br />quotes@rybus.co.za</p>
+              <p className="mt-2 text-white/80"><a href="mailto:rybus.info@gmail.com" className="hover:text-accent">rybus.info@gmail.com</a></p>
             </div>
             <div>
               <h4 className="font-display text-base font-semibold">Visit</h4>
@@ -536,7 +536,7 @@ function Footer() {
         <div className="text-muted-foreground">
           <div className="flex items-center gap-2"><MapPin className="h-4 w-4 text-primary" /> 44 Mulberry Gardens, Durbanville</div>
           <div className="mt-2 flex items-center gap-2"><Phone className="h-4 w-4 text-primary" /> {PHONE_DISPLAY}</div>
-          <div className="mt-2 flex items-center gap-2"><Mail className="h-4 w-4 text-primary" /> info@rybus.co.za</div>
+          <div className="mt-2 flex items-center gap-2"><Mail className="h-4 w-4 text-primary" /> <a href="mailto:rybus.info@gmail.com" className="hover:text-primary">rybus.info@gmail.com</a></div>
           <div className="mt-2 flex items-center gap-2"><Clock className="h-4 w-4 text-primary" /> Available 24/7 — including weekends & public holidays</div>
         </div>
         <div className="md:text-right text-muted-foreground">
