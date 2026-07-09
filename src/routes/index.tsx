@@ -476,7 +476,7 @@ function ContactForm() {
             </div>
             <div>
               <h4 className="font-display text-base font-semibold">Email</h4>
-              <p className="mt-2 text-white/80">info@rybus.co.za<br />quotes@rybus.co.za</p>
+              <p className="mt-2 text-white/80"><a href="mailto:rybus.info@gmail.com" className="hover:text-accent">rybus.info@gmail.com</a></p>
             </div>
             <div>
               <h4 className="font-display text-base font-semibold">Visit</h4>
