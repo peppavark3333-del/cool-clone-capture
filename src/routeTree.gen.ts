@@ -22,6 +22,7 @@ import { Route as AdminCustomersRouteImport } from './routes/admin.customers'
 import { Route as AdminContentRouteImport } from './routes/admin.content'
 import { Route as AdminAuditRouteImport } from './routes/admin.audit'
 import { Route as AdminAnalyticsRouteImport } from './routes/admin.analytics'
+import { Route as ApiPublicSendQuoteRouteImport } from './routes/api/public/send-quote'
 
 const TrustRoute = TrustRouteImport.update({
   id: '/trust',
@@ -88,6 +89,11 @@ const AdminAnalyticsRoute = AdminAnalyticsRouteImport.update({
   path: '/analytics',
   getParentRoute: () => AdminRoute,
 } as any)
+const ApiPublicSendQuoteRoute = ApiPublicSendQuoteRouteImport.update({
+  id: '/api/public/send-quote',
+  path: '/api/public/send-quote',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -103,6 +109,7 @@ export interface FileRoutesByFullPath {
   '/admin/quotes': typeof AdminQuotesRoute
   '/admin/status': typeof AdminStatusRoute
   '/admin/': typeof AdminIndexRoute
+  '/api/public/send-quote': typeof ApiPublicSendQuoteRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -117,6 +124,7 @@ export interface FileRoutesByTo {
   '/admin/quotes': typeof AdminQuotesRoute
   '/admin/status': typeof AdminStatusRoute
   '/admin': typeof AdminIndexRoute
+  '/api/public/send-quote': typeof ApiPublicSendQuoteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -133,6 +141,7 @@ export interface FileRoutesById {
   '/admin/quotes': typeof AdminQuotesRoute
   '/admin/status': typeof AdminStatusRoute
   '/admin/': typeof AdminIndexRoute
+  '/api/public/send-quote': typeof ApiPublicSendQuoteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -150,6 +159,7 @@ export interface FileRouteTypes {
     | '/admin/quotes'
     | '/admin/status'
     | '/admin/'
+    | '/api/public/send-quote'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -164,6 +174,7 @@ export interface FileRouteTypes {
     | '/admin/quotes'
     | '/admin/status'
     | '/admin'
+    | '/api/public/send-quote'
   id:
     | '__root__'
     | '/'
@@ -179,6 +190,7 @@ export interface FileRouteTypes {
     | '/admin/quotes'
     | '/admin/status'
     | '/admin/'
+    | '/api/public/send-quote'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -186,6 +198,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRouteWithChildren
   AdminLoginRoute: typeof AdminLoginRoute
   TrustRoute: typeof TrustRoute
+  ApiPublicSendQuoteRoute: typeof ApiPublicSendQuoteRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -281,6 +294,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAnalyticsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/api/public/send-quote': {
+      id: '/api/public/send-quote'
+      path: '/api/public/send-quote'
+      fullPath: '/api/public/send-quote'
+      preLoaderRoute: typeof ApiPublicSendQuoteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -315,17 +335,8 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRouteWithChildren,
   AdminLoginRoute: AdminLoginRoute,
   TrustRoute: TrustRoute,
+  ApiPublicSendQuoteRoute: ApiPublicSendQuoteRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

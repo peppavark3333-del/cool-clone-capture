@@ -433,7 +433,7 @@ function ContactForm() {
     e.preventDefault();
     if (!form.name || !form.phone || !form.email) return toast.error("Name, phone and email are required");
     setBusy(true);
-    const { error } = await supabase.from("quotes").insert({
+    const payload = {
       name: form.name.trim().slice(0, 100),
       phone: form.phone.trim().slice(0, 30),
       email: form.email.trim().slice(0, 255),
@@ -441,7 +441,15 @@ function ContactForm() {
       service_type: form.service_type || null,
       property_size: form.property_size.trim().slice(0, 100) || null,
       message: form.message.trim().slice(0, 2000) || null,
-    });
+    };
+    const { error } = await supabase.from("quotes").insert(payload);
+    if (!error) {
+      fetch("/api/public/send-quote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      }).catch((e) => console.error("send-quote failed", e));
+    }
     setBusy(false);
     if (error) return toast.error("Could not send. Please call us instead.");
     setSent(true);
