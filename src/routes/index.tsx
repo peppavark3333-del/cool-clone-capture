@@ -547,6 +547,11 @@ function Footer() {
           <div className="mt-2 flex items-center gap-2"><Phone className="h-4 w-4 text-primary" /> {PHONE_DISPLAY}</div>
           <div className="mt-2 flex items-center gap-2"><Mail className="h-4 w-4 text-primary" /> <a href="mailto:rybus.info@gmail.com" className="hover:text-primary">rybus.info@gmail.com</a></div>
           <div className="mt-2 flex items-center gap-2"><Clock className="h-4 w-4 text-primary" /> Available 24/7 — including weekends & public holidays</div>
+          <div className="mt-3">
+            <a href="https://www.facebook.com/profile.php?id=61591472893211" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 hover:text-primary">
+              <Facebook className="h-4 w-4 text-primary" /> Follow us on Facebook
+            </a>
+          </div>
         </div>
         <div className="md:text-right text-muted-foreground">
           © {new Date().getFullYear()} Rybus (Pty) Ltd. All rights reserved.
