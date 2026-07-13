@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import {
   Phone, MessageCircle, Mail, MapPin, Clock, ShieldCheck, Wrench,
   Snowflake, Wind, Flame, Droplets, Zap, Factory, ArrowRight, CheckCircle2,
+  Facebook,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
