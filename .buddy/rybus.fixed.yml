@@ -4,3 +4,13 @@
   fail_on_prepare_env_warning: true
   events:
   - type: WEBHOOK
+  actions:
+  - action: webpack
+    type: BUILD
+    commands: |-
+      npm install
+      webpack
+    setup_commands: npm install -g webpack webpack-cli
+    shell: BASH
+    docker_image_name: library/node
+    docker_image_tag: 24
