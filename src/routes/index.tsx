@@ -477,6 +477,9 @@ function ContactForm() {
             <a href={WHATSAPP} target="_blank" rel="noopener" className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-5 py-3 text-sm font-semibold backdrop-blur hover:bg-white/20">
               <MessageCircle className="h-4 w-4" /> WhatsApp
             </a>
+            <a href="https://www.facebook.com/profile.php?id=61591472893211" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-5 py-3 text-sm font-semibold backdrop-blur hover:bg-white/20">
+              <Facebook className="h-4 w-4" /> Facebook
+            </a>
           </div>
           <div className="mt-10 grid gap-5 sm:grid-cols-3 text-sm">
             <div>
