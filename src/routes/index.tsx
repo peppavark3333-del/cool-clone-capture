@@ -493,8 +493,28 @@ function ContactForm() {
             <div>
               <h4 className="font-display text-base font-semibold">Visit</h4>
               <p className="mt-2 text-white/80">44 Mulberry Gardens<br />Goedemoed, Durbanville<br />Cape Town</p>
-            </div>
           </div>
+          <div className="mt-8 overflow-hidden rounded-2xl border border-white/15 shadow-glow">
+            <iframe
+              title="Rybus location — 44 Mulberry Gardens, Durbanville"
+              src="https://www.google.com/maps?q=44%20Mulberry%20Gardens%2C%20Goedemoed%2C%20Durbanville%2C%20Cape%20Town&output=embed"
+              width="100%"
+              height="280"
+              style={{ border: 0 }}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+            />
+            <a
+              href="https://www.google.com/maps/search/?api=1&query=44+Mulberry+Gardens+Goedemoed+Durbanville+Cape+Town"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 bg-white/10 px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-white hover:bg-white/20"
+            >
+              <MapPin className="h-3.5 w-3.5" /> Open in Google Maps
+            </a>
+          </div>
+        </div>
         </div>
         <form onSubmit={submit} className="rounded-3xl bg-white/10 p-8 backdrop-blur border border-white/15">
           <div className="space-y-4">
