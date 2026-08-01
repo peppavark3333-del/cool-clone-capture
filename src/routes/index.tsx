@@ -192,9 +192,10 @@ function Header() {
             <a href="#chillers" className="hover:text-primary">Chillers</a>
             <a href="#contact" className="hover:text-primary">Contact</a>
           </nav>
-          <a href="#contact" className="inline-flex items-center gap-2 rounded-full bg-accent-gradient px-5 py-2.5 text-sm font-semibold text-accent-foreground shadow-glow hover:scale-[1.03] transition-transform">
-            Get a quote <ArrowRight className="h-4 w-4" />
+          <a href={WHATSAPP} target="_blank" rel="noopener" className="inline-flex items-center gap-2 rounded-full bg-accent-gradient px-5 py-2.5 text-sm font-semibold text-accent-foreground shadow-glow hover:scale-[1.03] transition-transform">
+            WhatsApp us <MessageCircle className="h-4 w-4" />
           </a>
+
         </div>
       </header>
     </>
