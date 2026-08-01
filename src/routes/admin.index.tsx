@@ -1,10 +1,11 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { supabase } from "@/integrations/supabase/client";
 import {
-  Users, Eye, FileText, CheckCircle2, Clock, DollarSign, Activity, TrendingUp,
+  Users, Eye, Activity, TrendingUp,
 } from "lucide-react";
+
 
 export const Route = createFileRoute("/admin/")({
   component: Dashboard,
