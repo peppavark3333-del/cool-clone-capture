@@ -54,9 +54,8 @@ function Notifications() {
               <div className="font-medium text-sm">{n.title}</div>
               <div className="text-xs text-muted-foreground">{n.body}</div>
               <div className="text-xs text-muted-foreground mt-1">{new Date(n.created_at).toLocaleString()}</div>
-              {n.link && n.link.startsWith("/admin/quotes/") && (
-                <Link to="/admin/quotes" className="text-xs text-primary hover:underline">View quote →</Link>
-              )}
+
+
             </div>
             <button onClick={() => remove(n.id)} className="text-muted-foreground hover:text-destructive p-1"><Trash2 className="h-4 w-4" /></button>
           </div>
