@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import {
-  LayoutDashboard, FileText, Users, Image, Settings, Bell, BarChart3,
+  LayoutDashboard, Users, Image, Settings, Bell, BarChart3,
   Shield, Server, LogOut, Menu, X,
 } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
@@ -9,8 +9,8 @@ import logo from "@/assets/rybus-logo.jpeg";
 
 const nav = [
   { to: "/admin", label: "Overview", icon: LayoutDashboard, exact: true },
-  { to: "/admin/quotes", label: "Quotes", icon: FileText },
   { to: "/admin/customers", label: "Customers", icon: Users },
+
   { to: "/admin/gallery", label: "Gallery", icon: Image },
   { to: "/admin/content", label: "Content", icon: Settings },
   { to: "/admin/notifications", label: "Notifications", icon: Bell },
