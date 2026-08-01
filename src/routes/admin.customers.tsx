@@ -76,7 +76,6 @@ function Customers() {
 
       <div className="grid gap-3">
         {customers.map((c) => {
-          const hist = c.email ? quoteHistory?.get(c.email.toLowerCase()) : undefined;
           return (
             <div key={c.id} className="rounded-2xl border border-border bg-background p-4">
               <div className="flex items-start justify-between gap-3">
@@ -89,8 +88,8 @@ function Customers() {
                   </div>
                   {c.address && <div className="mt-1 text-xs text-muted-foreground">{c.address}</div>}
                   {c.notes && <p className="mt-2 text-sm">{c.notes}</p>}
-                  {hist && <div className="mt-2 text-xs text-primary">{hist.count} quote request{hist.count === 1 ? "" : "s"} · last {new Date(hist.last).toLocaleDateString()}</div>}
                 </div>
+
                 <button onClick={() => remove(c.id)} className="text-destructive p-2 hover:bg-destructive/10 rounded-lg"><Trash2 className="h-4 w-4" /></button>
               </div>
             </div>
