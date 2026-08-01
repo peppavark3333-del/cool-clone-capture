@@ -13,10 +13,11 @@ function Analytics() {
     queryKey: ["analytics"],
     queryFn: async () => {
       const since30d = new Date(Date.now() - 30 * 86400000).toISOString();
-      const [{ data: views }, { data: quotes }] = await Promise.all([
-        supabase.from("page_views").select("path,created_at").gte("created_at", since30d).limit(10000),
-        supabase.from("quotes").select("created_at,status").gte("created_at", since30d),
-      ]);
+      const { data: views } = await supabase
+        .from("page_views")
+        .select("path,created_at")
+        .gte("created_at", since30d)
+        .limit(10000);
 
       const dayMap = new Map<string, number>();
       const monthMap = new Map<string, number>();
@@ -29,22 +30,14 @@ function Analytics() {
         pathMap.set(v.path, (pathMap.get(v.path) ?? 0) + 1);
       });
 
-      const quoteMap = new Map<string, number>();
-      (quotes ?? []).forEach((q) => {
-        const d = q.created_at.slice(0, 10);
-        quoteMap.set(d, (quoteMap.get(d) ?? 0) + 1);
-      });
-
-      const dailyKeys = Array.from(new Set([...dayMap.keys(), ...quoteMap.keys()])).sort();
-      const daily = dailyKeys.map((k) => ({ date: k.slice(5), visitors: dayMap.get(k) ?? 0, quotes: quoteMap.get(k) ?? 0 }));
+      const daily = Array.from(dayMap.keys()).sort().map((k) => ({ date: k.slice(5), visitors: dayMap.get(k) ?? 0 }));
       const monthly = Array.from(monthMap.entries()).sort().map(([month, v]) => ({ month, visitors: v }));
       const topPages = Array.from(pathMap.entries()).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([path, v]) => ({ path, views: v }));
 
       const totalVisitors = views?.length ?? 0;
-      const totalQuotes = quotes?.length ?? 0;
-      const conversion = totalVisitors > 0 ? ((totalQuotes / totalVisitors) * 100).toFixed(2) : "0";
+      const uniquePages = pathMap.size;
 
-      return { daily, monthly, topPages, totalVisitors, totalQuotes, conversion };
+      return { daily, monthly, topPages, totalVisitors, uniquePages };
     },
   });
 
@@ -52,11 +45,11 @@ function Analytics() {
     <AdminShell title="Analytics">
       <div className="grid gap-4 sm:grid-cols-3 mb-6">
         <Kpi label="Visitors (30d)" value={data?.totalVisitors ?? "…"} />
-        <Kpi label="Quote requests (30d)" value={data?.totalQuotes ?? "…"} />
-        <Kpi label="Conversion rate" value={data ? `${data.conversion}%` : "…"} />
+        <Kpi label="Pages tracked" value={data?.uniquePages ?? "…"} />
+        <Kpi label="Avg. views / day" value={data ? Math.round(data.totalVisitors / Math.max(data.daily.length, 1)) : "…"} />
       </div>
 
-      <Card title="Daily traffic & quote requests (last 30 days)">
+      <Card title="Daily traffic (last 30 days)">
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={data?.daily ?? []}>
@@ -65,11 +58,11 @@ function Analytics() {
               <YAxis fontSize={11} />
               <Tooltip />
               <Line type="monotone" dataKey="visitors" stroke="hsl(var(--primary))" strokeWidth={2} />
-              <Line type="monotone" dataKey="quotes" stroke="hsl(var(--accent))" strokeWidth={2} />
             </LineChart>
           </ResponsiveContainer>
         </div>
       </Card>
+
 
       <div className="grid gap-4 lg:grid-cols-2 mt-4">
         <Card title="Monthly visitors">

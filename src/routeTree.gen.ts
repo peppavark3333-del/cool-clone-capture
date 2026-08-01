@@ -15,14 +15,12 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminStatusRouteImport } from './routes/admin.status'
-import { Route as AdminQuotesRouteImport } from './routes/admin.quotes'
 import { Route as AdminNotificationsRouteImport } from './routes/admin.notifications'
 import { Route as AdminGalleryRouteImport } from './routes/admin.gallery'
 import { Route as AdminCustomersRouteImport } from './routes/admin.customers'
 import { Route as AdminContentRouteImport } from './routes/admin.content'
 import { Route as AdminAuditRouteImport } from './routes/admin.audit'
 import { Route as AdminAnalyticsRouteImport } from './routes/admin.analytics'
-import { Route as ApiPublicSendQuoteRouteImport } from './routes/api/public/send-quote'
 
 const TrustRoute = TrustRouteImport.update({
   id: '/trust',
@@ -52,11 +50,6 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
 const AdminStatusRoute = AdminStatusRouteImport.update({
   id: '/status',
   path: '/status',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminQuotesRoute = AdminQuotesRouteImport.update({
-  id: '/quotes',
-  path: '/quotes',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminNotificationsRoute = AdminNotificationsRouteImport.update({
@@ -89,11 +82,6 @@ const AdminAnalyticsRoute = AdminAnalyticsRouteImport.update({
   path: '/analytics',
   getParentRoute: () => AdminRoute,
 } as any)
-const ApiPublicSendQuoteRoute = ApiPublicSendQuoteRouteImport.update({
-  id: '/api/public/send-quote',
-  path: '/api/public/send-quote',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -106,10 +94,8 @@ export interface FileRoutesByFullPath {
   '/admin/customers': typeof AdminCustomersRoute
   '/admin/gallery': typeof AdminGalleryRoute
   '/admin/notifications': typeof AdminNotificationsRoute
-  '/admin/quotes': typeof AdminQuotesRoute
   '/admin/status': typeof AdminStatusRoute
   '/admin/': typeof AdminIndexRoute
-  '/api/public/send-quote': typeof ApiPublicSendQuoteRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -121,10 +107,8 @@ export interface FileRoutesByTo {
   '/admin/customers': typeof AdminCustomersRoute
   '/admin/gallery': typeof AdminGalleryRoute
   '/admin/notifications': typeof AdminNotificationsRoute
-  '/admin/quotes': typeof AdminQuotesRoute
   '/admin/status': typeof AdminStatusRoute
   '/admin': typeof AdminIndexRoute
-  '/api/public/send-quote': typeof ApiPublicSendQuoteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -138,10 +122,8 @@ export interface FileRoutesById {
   '/admin/customers': typeof AdminCustomersRoute
   '/admin/gallery': typeof AdminGalleryRoute
   '/admin/notifications': typeof AdminNotificationsRoute
-  '/admin/quotes': typeof AdminQuotesRoute
   '/admin/status': typeof AdminStatusRoute
   '/admin/': typeof AdminIndexRoute
-  '/api/public/send-quote': typeof ApiPublicSendQuoteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -156,10 +138,8 @@ export interface FileRouteTypes {
     | '/admin/customers'
     | '/admin/gallery'
     | '/admin/notifications'
-    | '/admin/quotes'
     | '/admin/status'
     | '/admin/'
-    | '/api/public/send-quote'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -171,10 +151,8 @@ export interface FileRouteTypes {
     | '/admin/customers'
     | '/admin/gallery'
     | '/admin/notifications'
-    | '/admin/quotes'
     | '/admin/status'
     | '/admin'
-    | '/api/public/send-quote'
   id:
     | '__root__'
     | '/'
@@ -187,10 +165,8 @@ export interface FileRouteTypes {
     | '/admin/customers'
     | '/admin/gallery'
     | '/admin/notifications'
-    | '/admin/quotes'
     | '/admin/status'
     | '/admin/'
-    | '/api/public/send-quote'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -198,7 +174,6 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRouteWithChildren
   AdminLoginRoute: typeof AdminLoginRoute
   TrustRoute: typeof TrustRoute
-  ApiPublicSendQuoteRoute: typeof ApiPublicSendQuoteRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -245,13 +220,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminStatusRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/quotes': {
-      id: '/admin/quotes'
-      path: '/quotes'
-      fullPath: '/admin/quotes'
-      preLoaderRoute: typeof AdminQuotesRouteImport
-      parentRoute: typeof AdminRoute
-    }
     '/admin/notifications': {
       id: '/admin/notifications'
       path: '/notifications'
@@ -294,13 +262,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAnalyticsRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/api/public/send-quote': {
-      id: '/api/public/send-quote'
-      path: '/api/public/send-quote'
-      fullPath: '/api/public/send-quote'
-      preLoaderRoute: typeof ApiPublicSendQuoteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -311,7 +272,6 @@ interface AdminRouteChildren {
   AdminCustomersRoute: typeof AdminCustomersRoute
   AdminGalleryRoute: typeof AdminGalleryRoute
   AdminNotificationsRoute: typeof AdminNotificationsRoute
-  AdminQuotesRoute: typeof AdminQuotesRoute
   AdminStatusRoute: typeof AdminStatusRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
@@ -323,7 +283,6 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminCustomersRoute: AdminCustomersRoute,
   AdminGalleryRoute: AdminGalleryRoute,
   AdminNotificationsRoute: AdminNotificationsRoute,
-  AdminQuotesRoute: AdminQuotesRoute,
   AdminStatusRoute: AdminStatusRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
@@ -335,7 +294,6 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRouteWithChildren,
   AdminLoginRoute: AdminLoginRoute,
   TrustRoute: TrustRoute,
-  ApiPublicSendQuoteRoute: ApiPublicSendQuoteRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

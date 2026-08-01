@@ -1,12 +1,10 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import {
   Phone, MessageCircle, Mail, MapPin, Clock, ShieldCheck, Wrench,
-  Snowflake, Wind, Flame, Droplets, Zap, Factory, ArrowRight, CheckCircle2,
+  Snowflake, Wind, Flame, Droplets, Zap, Factory, CheckCircle2,
   Facebook,
 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
 import logo from "@/assets/rybus-logo.jpeg";
 
 export const Route = createFileRoute("/")({
@@ -192,9 +190,10 @@ function Header() {
             <a href="#chillers" className="hover:text-primary">Chillers</a>
             <a href="#contact" className="hover:text-primary">Contact</a>
           </nav>
-          <a href="#contact" className="inline-flex items-center gap-2 rounded-full bg-accent-gradient px-5 py-2.5 text-sm font-semibold text-accent-foreground shadow-glow hover:scale-[1.03] transition-transform">
-            Get a quote <ArrowRight className="h-4 w-4" />
+          <a href={WHATSAPP} target="_blank" rel="noopener" className="inline-flex items-center gap-2 rounded-full bg-accent-gradient px-5 py-2.5 text-sm font-semibold text-accent-foreground shadow-glow hover:scale-[1.03] transition-transform">
+            WhatsApp us <MessageCircle className="h-4 w-4" />
           </a>
+
         </div>
       </header>
     </>
@@ -423,59 +422,27 @@ function CoolingTowers() {
 }
 
 function ContactForm() {
-  const [sent, setSent] = useState(false);
-  const [busy, setBusy] = useState(false);
-  const [form, setForm] = useState({
-    name: "", phone: "", email: "", address: "",
-    service_type: "", property_size: "", message: "",
-  });
-
-  const submit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!form.name || !form.phone || !form.email) return toast.error("Name, phone and email are required");
-    setBusy(true);
-    const payload = {
-      name: form.name.trim().slice(0, 100),
-      phone: form.phone.trim().slice(0, 30),
-      email: form.email.trim().slice(0, 255),
-      address: form.address.trim().slice(0, 500) || null,
-      service_type: form.service_type || null,
-      property_size: form.property_size.trim().slice(0, 100) || null,
-      message: form.message.trim().slice(0, 2000) || null,
-    };
-    const { error } = await supabase.from("quotes").insert(payload);
-    if (!error) {
-      fetch("/api/public/send-quote", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      }).catch((e) => console.error("send-quote failed", e));
-    }
-    setBusy(false);
-    if (error) return toast.error("Could not send. Please call us instead.");
-    setSent(true);
-    toast.success("Thanks! We'll be in touch shortly.");
-    setForm({ name: "", phone: "", email: "", address: "", service_type: "", property_size: "", message: "" });
-  };
-
   return (
     <section id="contact" className="bg-hero-gradient text-white">
       <div className="mx-auto grid max-w-7xl gap-12 px-6 py-24 md:grid-cols-2">
         <div>
-          <Eyebrow>Request a quote</Eyebrow>
-          <h2 className="mt-3 font-display text-4xl font-bold md:text-5xl">Tell us about your project.</h2>
+          <Eyebrow>Get in touch</Eyebrow>
+          <h2 className="mt-3 font-display text-4xl font-bold md:text-5xl">WhatsApp us or send an email.</h2>
           <p className="mt-4 text-white/80">
-            Fill in a few details and we'll get back to you with a tailored quotation. For emergencies, call us directly — we're available 24/7.
+            Tell us what you need and we'll come back to you fast. For emergencies, call us directly — we're available 24/7.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <a href={`tel:${PHONE}`} className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-[color:var(--deep)] hover:scale-[1.03] transition-transform">
+            <a href={WHATSAPP} target="_blank" rel="noopener" className="inline-flex items-center gap-2 rounded-full bg-accent-gradient px-6 py-3 text-sm font-semibold text-accent-foreground shadow-glow hover:scale-[1.03] transition-transform">
+              <MessageCircle className="h-4 w-4" /> WhatsApp us
+            </a>
+            <a href="mailto:rybus.info@gmail.com" className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-[color:var(--deep)] hover:scale-[1.03] transition-transform">
+              <Mail className="h-4 w-4" /> Email us
+            </a>
+            <a href={`tel:${PHONE}`} className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-5 py-3 text-sm font-semibold backdrop-blur hover:bg-white/20">
               <Phone className="h-4 w-4" /> Ryno — 082 232 0386
             </a>
             <a href="tel:+27639518791" className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-5 py-3 text-sm font-semibold backdrop-blur hover:bg-white/20">
               <Phone className="h-4 w-4" /> Jakobus (Tech) — 063 951 8791
-            </a>
-            <a href={WHATSAPP} target="_blank" rel="noopener" className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-5 py-3 text-sm font-semibold backdrop-blur hover:bg-white/20">
-              <MessageCircle className="h-4 w-4" /> WhatsApp
             </a>
             <a href="https://www.facebook.com/profile.php?id=61591472893211" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-5 py-3 text-sm font-semibold backdrop-blur hover:bg-white/20">
               <Facebook className="h-4 w-4" /> Facebook
@@ -493,66 +460,34 @@ function ContactForm() {
             <div>
               <h4 className="font-display text-base font-semibold">Visit</h4>
               <p className="mt-2 text-white/80">44 Mulberry Gardens<br />Goedemoed, Durbanville<br />Cape Town</p>
-          </div>
-          <div className="mt-8 overflow-hidden rounded-2xl border border-white/15 shadow-glow">
-            <iframe
-              title="Rybus location — 44 Mulberry Gardens, Durbanville"
-              src="https://www.google.com/maps?q=44%20Mulberry%20Gardens%2C%20Goedemoed%2C%20Durbanville%2C%20Cape%20Town&output=embed"
-              width="100%"
-              height="280"
-              style={{ border: 0 }}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              allowFullScreen
-            />
-            <a
-              href="https://www.google.com/maps/search/?api=1&query=44+Mulberry+Gardens+Goedemoed+Durbanville+Cape+Town"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 bg-white/10 px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-white hover:bg-white/20"
-            >
-              <MapPin className="h-3.5 w-3.5" /> Open in Google Maps
-            </a>
+            </div>
           </div>
         </div>
+        <div className="overflow-hidden rounded-3xl border border-white/15 shadow-glow self-start">
+          <iframe
+            title="Rybus location — 44 Mulberry Gardens, Durbanville"
+            src="https://www.google.com/maps?q=44%20Mulberry%20Gardens%2C%20Goedemoed%2C%20Durbanville%2C%20Cape%20Town&output=embed"
+            width="100%"
+            height="420"
+            style={{ border: 0 }}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            allowFullScreen
+          />
+          <a
+            href="https://www.google.com/maps/search/?api=1&query=44+Mulberry+Gardens+Goedemoed+Durbanville+Cape+Town"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 bg-white/10 px-4 py-3 text-xs font-semibold uppercase tracking-wider text-white hover:bg-white/20"
+          >
+            <MapPin className="h-3.5 w-3.5" /> Open in Google Maps
+          </a>
         </div>
-        <form onSubmit={submit} className="rounded-3xl bg-white/10 p-8 backdrop-blur border border-white/15">
-          <div className="space-y-4">
-            <Field label="Full name *"><input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} maxLength={100} className="w-full rounded-lg bg-white/10 border border-white/20 px-4 py-3 outline-none focus:border-accent placeholder-white/50" placeholder="Your name" /></Field>
-            <div className="grid sm:grid-cols-2 gap-4">
-              <Field label="Phone *"><input required value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} maxLength={30} className="w-full rounded-lg bg-white/10 border border-white/20 px-4 py-3 outline-none focus:border-accent placeholder-white/50" placeholder="082…" /></Field>
-              <Field label="Email *"><input required type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} maxLength={255} className="w-full rounded-lg bg-white/10 border border-white/20 px-4 py-3 outline-none focus:border-accent placeholder-white/50" placeholder="you@example.com" /></Field>
-            </div>
-            <Field label="Address"><input value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} maxLength={500} className="w-full rounded-lg bg-white/10 border border-white/20 px-4 py-3 outline-none focus:border-accent placeholder-white/50" placeholder="Where is the job?" /></Field>
-            <div className="grid sm:grid-cols-2 gap-4">
-              <Field label="Service required">
-                <select value={form.service_type} onChange={(e) => setForm({ ...form, service_type: e.target.value })} className="w-full rounded-lg bg-white/10 border border-white/20 px-4 py-3 outline-none focus:border-accent text-white">
-                  {["","Air-conditioning","Refrigeration","Ducting & Ventilation","Heat Pumps","Glycol & Water Chillers","Electricals & Controllers","Ice Machines & Compressors","Air Curtains & Cooling Towers","Solar Hot Water","Other"].map((o) => (
-                    <option key={o} value={o} className="text-foreground">{o || "Select a service…"}</option>
-                  ))}
-                </select>
-              </Field>
-              <Field label="Property size"><input value={form.property_size} onChange={(e) => setForm({ ...form, property_size: e.target.value })} maxLength={100} className="w-full rounded-lg bg-white/10 border border-white/20 px-4 py-3 outline-none focus:border-accent placeholder-white/50" placeholder="e.g. 80m² or 3 rooms" /></Field>
-            </div>
-            <Field label="Message"><textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} maxLength={2000} rows={4} className="w-full rounded-lg bg-white/10 border border-white/20 px-4 py-3 outline-none focus:border-accent placeholder-white/50" placeholder="Tell us about the job" /></Field>
-            <button disabled={busy} type="submit" className="w-full rounded-full bg-accent-gradient px-6 py-3 font-semibold text-accent-foreground shadow-glow hover:scale-[1.02] transition-transform disabled:opacity-60">
-              {busy ? "Sending…" : sent ? "Thanks — we'll be in touch" : "Send request"}
-            </button>
-          </div>
-        </form>
       </div>
     </section>
   );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <label className="block">
-      <span className="text-xs uppercase tracking-wider text-white/70">{label}</span>
-      <div className="mt-1.5">{children}</div>
-    </label>
-  );
-}
 
 function Footer() {
   return (
