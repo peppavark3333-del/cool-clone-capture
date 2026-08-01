@@ -30,19 +30,8 @@ function Customers() {
     },
   });
 
-  const { data: quoteHistory } = useQuery({
-    queryKey: ["customer-history"],
-    queryFn: async () => {
-      const { data } = await supabase.from("quotes").select("email,service_type,status,created_at");
-      const map = new Map<string, { count: number; last: string }>();
-      (data ?? []).forEach((q) => {
-        if (!q.email) return;
-        const prev = map.get(q.email.toLowerCase());
-        if (!prev || prev.last < q.created_at) map.set(q.email.toLowerCase(), { count: (prev?.count ?? 0) + 1, last: q.created_at });
-      });
-      return map;
-    },
-  });
+
+
 
   const create = async () => {
     if (!form.name) return toast.error("Name is required");
