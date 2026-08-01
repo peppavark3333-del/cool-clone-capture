@@ -1,12 +1,10 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import {
   Phone, MessageCircle, Mail, MapPin, Clock, ShieldCheck, Wrench,
-  Snowflake, Wind, Flame, Droplets, Zap, Factory, ArrowRight, CheckCircle2,
+  Snowflake, Wind, Flame, Droplets, Zap, Factory, CheckCircle2,
   Facebook,
 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
 import logo from "@/assets/rybus-logo.jpeg";
 
 export const Route = createFileRoute("/")({
